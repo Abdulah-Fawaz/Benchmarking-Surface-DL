@@ -1,0 +1,13 @@
+--model=monet
+--project=False
+--task=regression
+--logdir=tmp/
+--in_channels=4
+--dataset_arr=scan_age
+--patience=100
+--train_rotations=False
+--train_warps=100
+--learning_rate=0.001
+--unwarp_dir=/data/warped_native
+--warp_dir=/data/warped_native
+--train_bsize=1

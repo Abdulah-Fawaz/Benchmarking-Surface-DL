@@ -1,0 +1,9 @@
+--model=presnet
+--project=True
+--task=regression_confounded
+--logdir=tmp/
+--in_channels=4
+--dataset_arr=birth_age_confounded
+--patience=100
+--train_rotations=True
+--device=0
