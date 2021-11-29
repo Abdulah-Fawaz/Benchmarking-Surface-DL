@@ -24,9 +24,9 @@ We provide processed and curated dataset from the [Developing Human Connectome P
 # Code Usage
 
 To use the code, first create a conda environment using the environment.yml file by running:
-'''
+```
 conda env create -f environment.yml
-'''
+```
 Please note that this may cause issues with non-Windows users, or those running different versions of CUDA or python, for example. In this case, please download the required modules from their respective sources.
 
 To run the code, all file locations must be changed as appropriate. 
