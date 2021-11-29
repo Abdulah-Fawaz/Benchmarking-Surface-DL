@@ -41,4 +41,13 @@ To run the code, all file locations must be changed as appropriate.
 For all regression experiments excluding UG-SCNN, please utilise the regression experiments folder. For these experiments, experimental parameters must be set in the text files found in the *params* folder; instructions on how to do this are in the README-params file found in the folder. 
 Some example experiments are provided for simplicity. 
 
-
+To run a graph model experiment with params in file *experiment_1.txt* from the terminal, input:
+```
+python train_graph.py @params/experiment_1.txt
+```
+For non graph models use:
+ ```
+ python train.py @params/experiment_1.txt
+ ```
+ 
+Results will be automatically saved in the appropriate results folder
