@@ -8,8 +8,8 @@
 ### PREREQUISITES for this script are: 
 #### 1) Connectome Workbench, available here: https://www.humanconnectome.org/software/get-connectome-workbench 
 #### 2) dHCP symmetric template, available here: https://brain-development.org/brain-atlases/atlases-from-the-dhcp-project/cortical-surface-template/ 
-#### 3) Sixth-order icosphere, found in the icosahedrons folder (ico-6.surf.gii)
-#### 4) Sixth-order icosphere warps, that can be generated with the script XX
+#### 3) Sixth-order icosphere, available in the icosahedrons folder (ico-6.surf.gii)
+#### 4) Sixth-order icosphere warps, available at: https://emckclac-my.sharepoint.com/:f:/g/personal/k1812201_kcl_ac_uk/EluWzKNeKd5CmMqGc1n1cKcBwe2n2yU7CJrzoD_0u8r_7g
 
 
 ### loop over all subjects in list ###
@@ -27,6 +27,8 @@ for hemi in left right ; do
 for num in {0..99} ; do 
 
 ### list variables - user will need to specify location of top directories ###
+##users must specify path, wb_command path, location of the ico6 file, location of the warped ico6 files, path to the dHCP symmetric template##
+
 
 path=/<path to dHCP data>/derivatives/dhcp_anat_pipeline/sub-${subid}/ses-${sesid} ### User needs to specify ###
 myelin=${path}/anat/sub-${subid}_ses-${sesid}_hemi-${hemi}_myelinmap.shape.gii
