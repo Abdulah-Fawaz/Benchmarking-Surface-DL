@@ -249,8 +249,8 @@ class GraphUNet_no_TopK(nn.Module):
         x = self.softmax(x)
         
         return x
-
-class GraphUNet_TopK(torch.nn.Module):
+    
+class GraphUNet_TopK_GCN(torch.nn.Module):
     r"""The Graph U-Net model from the `"Graph U-Nets"
     <https://arxiv.org/abs/1905.05178>`_ paper which implements a U-Net like
     architecture with graph pooling and unpooling operations.
@@ -270,17 +270,15 @@ class GraphUNet_TopK(torch.nn.Module):
     """
     def __init__(self, in_channels, out_channels, depth,
                  pool_ratios=0.5, sum_res=True, act=F.relu):
-        super(GraphUNet_TopK, self).__init__()
+        super(GraphUNet_TopK_GCN, self).__init__()
         assert depth >= 1
         self.in_channels = in_channels
-
+        
         self.out_channels = out_channels
         self.depth = depth
         self.pool_ratios = repeat(pool_ratios, depth)
         self.act = act
         self.sum_res = sum_res
-
-    
 
         self.down_convs = torch.nn.ModuleList([GCNConv(in_channels,32, improved=True), GCNConv(32,64, improved=True), GCNConv(64,128, improved=True), GCNConv(128, 256, improved=True), GCNConv(256,512,improved=True)])
         #self.down_convs = torch.nn.ModuleList([ChebConv(in_channels,32, K=3), ChebConv(32,64, K=3), ChebConv(64,128, K=3), ChebConv(128,256, K=3), ChebConv(256,512, K=3)])
@@ -291,6 +289,142 @@ class GraphUNet_TopK(torch.nn.Module):
 
         self.up_convs = torch.nn.ModuleList([GCNConv(512,256,improved=True),GCNConv(256,128,improved=True), GCNConv(128,64,improved=True), GCNConv(64,32, improved=True), GCNConv(32,out_channels, improved=True)])
         #self.up_convs = torch.nn.ModuleList([ChebConv(512,256,K=3),ChebConv(256,128,K=3), ChebConv(128,64,K=3), ChebConv(64,32, K=3), ChebConv(32,out_channels, K=3)])
+        self.conv_out = GCNConv(32,37, improved=True)
+        #self.conv_out = ChebConv(32,37,K=3)
+        self.softmax = nn.Softmax(dim=1)
+
+
+        self.reset_parameters()
+
+
+    def reset_parameters(self):
+        for conv in self.down_convs:
+            conv.reset_parameters()
+        for pool in self.pools:
+            pool.reset_parameters()
+        for conv in self.up_convs:
+            conv.reset_parameters()
+
+
+
+    def forward(self, x, edge_index, batch=None):
+        """"""
+        if batch is None:
+            batch = edge_index.new_zeros(x.size(0))
+        edge_weight = x.new_ones(edge_index.size(1))
+
+        x = self.down_convs[0](x, edge_index, edge_weight)
+        x = self.act(x)
+
+        xs = [x]
+        edge_indices = [edge_index]
+        edge_weights = [edge_weight]
+        perms = []
+
+        for i in range(1, self.depth + 1):
+            edge_index, edge_weight = self.augment_adj(edge_index, edge_weight,
+                                                       x.size(0))
+            x, edge_index, edge_weight, batch, perm, _ = self.pools[i-1](
+                x, edge_index, edge_weight, batch)
+
+            x = self.down_convs[i](x, edge_index, edge_weight)
+            x = self.act(x)
+
+            if i  < self.depth:
+                xs += [x]
+                edge_indices += [edge_index]
+                edge_weights += [edge_weight]
+            perms += [perm]
+
+        for i in range(self.depth):
+            j = self.depth - 1 - i
+
+            res = xs[j]
+            edge_index = edge_indices[j]
+            edge_weight = edge_weights[j]
+            perm = perms[j]
+            
+
+            up = torch.zeros_like(res)
+            #up = torch.cat((up,up),dim=0)
+            up[perm] = x[:,:len(res[1])]
+            x = res + up if self.sum_res else torch.cat((res, up), dim=-1)
+
+            x = self.up_convs[i](x, edge_index, edge_weight)
+            x = self.act(x) if i < self.depth - 1 else x
+        x = self.conv_out(x, edge_index, edge_weight)
+        x = self.softmax(x)
+        return x
+
+
+    def augment_adj(self, edge_index, edge_weight, num_nodes):
+        edge_index, edge_weight = remove_self_loops(edge_index, edge_weight)
+        edge_index, edge_weight = add_self_loops(edge_index, edge_weight,
+                                                 num_nodes=num_nodes)
+        edge_index, edge_weight = sort_edge_index(edge_index, edge_weight,
+                                                  num_nodes)
+        edge_index, edge_weight = spspmm(edge_index, edge_weight, edge_index,
+                                         edge_weight, num_nodes, num_nodes,
+                                         num_nodes)
+        edge_index, edge_weight = remove_self_loops(edge_index, edge_weight)
+        return edge_index, edge_weight
+
+
+    def __repr__(self):
+        return '{}({}, {}, {}, depth={}, pool_ratios={})'.format(
+            self.__class__.__name__, self.in_channels,
+            self.out_channels, self.depth, self.pool_ratios)
+    
+class GraphUNet_TopK_Cheb(torch.nn.Module):
+    r"""The Graph U-Net model from the `"Graph U-Nets"
+    <https://arxiv.org/abs/1905.05178>`_ paper which implements a U-Net like
+    architecture with graph pooling and unpooling operations.
+
+    Args:
+        in_channels (int): Size of each input sample.
+        hidden_channels (int): Size of each hidden sample.
+        out_channels (int): Size of each output sample.
+        depth (int): The depth of the U-Net architecture.
+        pool_ratios (float or [float], optional): Graph pooling ratio for each
+            depth. (default: :obj:`0.5`)
+        sum_res (bool, optional): If set to :obj:`False`, will use
+            concatenation for integration of skip connections instead
+            summation. (default: :obj:`True`)
+        act (torch.nn.functional, optional): The nonlinearity to use.
+            (default: :obj:`torch.nn.functional.relu`)
+    """
+    def __init__(self, in_channels, out_channels, depth,
+                 pool_ratios=0.5, sum_res=True, act=F.relu):
+        super(GraphUNet_TopK_Cheb, self).__init__()
+        assert depth >= 1
+        self.in_channels = in_channels
+
+        self.out_channels = out_channels
+        self.depth = depth
+        self.pool_ratios = repeat(pool_ratios, depth)
+        self.act = act
+        self.sum_res = sum_res
+
+        self.device = device
+        #self.conv1 = conv_style(self.in_channels, 32, improved=True)
+        #self.conv2 = conv_style(32, 64, improved=True)
+        #self.conv3 = conv_style(64, 128,improved=True)
+        #self.conv4 = conv_style(128, 256, improved=True)
+        #self.conv5 = conv_style(256,512,improved=True)
+        #self.conv6 = conv_style(512,512,improved=True)
+        
+
+            
+
+        # self.down_convs = torch.nn.ModuleList([GCNConv(in_channels,32, improved=True), GCNConv(32,64, improved=True), GCNConv(64,128, improved=True), GCNConv(128, 256, improved=True), GCNConv(256,512,improved=True)])
+        self.down_convs = torch.nn.ModuleList([ChebConv(in_channels,32, K=3), ChebConv(32,64, K=3), ChebConv(64,128, K=3), ChebConv(128,256, K=3), ChebConv(256,512, K=3)])
+        self.pools = torch.nn.ModuleList([TopKPooling(32,0.5), TopKPooling(64,0.5), TopKPooling(128,0.5), TopKPooling(256,0.5), TopKPooling(512,0.5)])
+        
+
+
+
+        # self.up_convs = torch.nn.ModuleList([GCNConv(512,256,improved=True),GCNConv(256,128,improved=True), GCNConv(128,64,improved=True), GCNConv(64,32, improved=True), GCNConv(32,out_channels, improved=True)])
+        self.up_convs = torch.nn.ModuleList([ChebConv(512,256,K=3),ChebConv(256,128,K=3), ChebConv(128,64,K=3), ChebConv(64,32, K=3), ChebConv(32,out_channels, K=3)])
         self.conv_out = GCNConv(32,37, improved=True)
         #self.conv_out = ChebConv(32,37,K=3)
         self.softmax = nn.Softmax(dim=1)

@@ -69,10 +69,12 @@ from torch_geometric.data import Data
 
 
 
-edges = torch.LongTensor(np.load('/data/Data/benchmarking/graph_methods/edge_ico_6.npy').T)
+edges = torch.LongTensor(np.load('data/edge_ico_6.npy').T)
 
-mesh_folder='/data/Data/ugscnn1/mesh_files'
+mesh_folder='../mesh_files'
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+
+# LOAD TORCH MODEL#
 
 model = torch.load('/home/lw19/Desktop/final_benchmarking_models/best_GConvNet_TopK_Native_warp_rot')
 #model = torch.load('/data/Data/HCP/HCP_models/best_MoUNet_warp_no_rot_upconv_double_conv_DO_2d')
@@ -80,7 +82,7 @@ model = torch.load('/home/lw19/Desktop/final_benchmarking_models/best_GConvNet_T
 model.to(device)
 model.train()
 
-test_set = np.load('/data/Data/dHCP/spherical_unet/spherical_unet/M-CRIB-S_test_TEA.npy', allow_pickle=True)
+test_set = np.load('../M-CRIB-S_test_TEA.npy', allow_pickle=True)
 #test_set = np.load('/media/logan/Storage/Data/HCP/test_list.npy', allow_pickle=True)
 
 
