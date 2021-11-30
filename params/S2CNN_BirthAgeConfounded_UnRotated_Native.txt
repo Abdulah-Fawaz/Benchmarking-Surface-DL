@@ -1,12 +1,12 @@
---model=gconvnet
---project=False
+--model=s2cnn_small
+--project=True
 --task=regression_confounded
 --logdir=tmp/
 --in_channels=4
 --dataset_arr=birth_age_confounded
 --patience=100
---train_rotations=True
---train_warps=100
---learning_rate=0.001
+--train_rotations=False
+--features=16,32,64,128,256
+--device=0
 --unwarp_dir=/data/warped_native
 --warp_dir=/data/warped_native

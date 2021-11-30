@@ -1,4 +1,4 @@
---model=monet
+--model=monet_polar
 --project=False
 --task=regression_confounded
 --logdir=tmp/
@@ -8,4 +8,6 @@
 --train_rotations=True
 --train_warps=100
 --learning_rate=0.001
+--unwarp_dir=/data/warped_native
+--warp_dir=/data/warped_native
 --train_bsize=1

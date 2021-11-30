@@ -52,7 +52,7 @@ def dice_coeff(pred, target):
 
 train_ds = My_dHCP_Data_Graph(train_set,
                       edges=edges, 
-                      rotations= False, 
+                      rotations= False,  # EDIT HERE True or FALSE
                       parity_choice='both', 
                       number_of_warps = 99, output_as_torch=True,normalisation='std')
     

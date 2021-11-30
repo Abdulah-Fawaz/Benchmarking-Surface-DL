@@ -7,5 +7,5 @@
 --train_rotations=True
 --train_warps=100
 --learning_rate=0.001
---unwarped_dir
---warpd_dir=
+--unwarped_dir=/home/fa19/Documents/dHCP_Data_merged/merged
+--warpd_dir=/home/fa19/Documents/dHCP_Data_merged/Warped
