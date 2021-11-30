@@ -8,8 +8,8 @@
 ### PREREQUISITES for this script are: 
 #### 1) Connectome Workbench, available here: https://www.humanconnectome.org/software/get-connectome-workbench 
 #### 2) dHCP symmetric template, available here: https://brain-development.org/brain-atlases/atlases-from-the-dhcp-project/cortical-surface-template/ 
-#### 3) Sixth-order icosphere, available here: xyz 
-#### 4) Sixth-order icosphere warps, available here: 
+#### 3) Sixth-order icosphere, found in the icosahedrons folder (ico-6.surf.gii)
+#### 4) Sixth-order icosphere warps, that can be generated with the script XX
 
 
 ### loop over all subjects in list ###
