@@ -61,7 +61,7 @@ For non graph models use:
  
 Results will be automatically saved in the appropriate results folder.
 
-# UGSCNN / Segemntation Experiments
+# UGSCNN / Segemntation Experiments - Setting Experiment Parameters
 
 To run a segmentation or UGSCNN regression experiment, go to the relevant folder within the Segmentation_UGSCNN directory. 
 The appropriate experimental parameters must be changed manually. 
@@ -71,6 +71,7 @@ Within the dataloader, the unwarped and warped file directories must be specifie
 The dataloaders are found in the following locations:
 - for projected resnet: Projected_ResNet/MyDataLoader.py
 - for Spherical UNet: Spherical_UNet/Spherical_UNet_Dataloader.py 
+- for UGSCNN: meshcnn/utils.py
 - for all Graph Models (MoNet, ChebNet, GConvNet): GraphMethods/graph_dataloader.py 
 
 After setting the correct data locations, each experiment can be run from its corresponding executable python file.
@@ -82,14 +83,11 @@ e.g
 train_loader = My_Projected_dHCP_Data_Segmentation(train_set, number_of_warps = 99, rotations= <#CHANGE HERE#>, smoothing = False, normalisation='std', parity_choice='both', output_as_torch=True)
 ```
 
-For the Graph Methods, two separate execitables exist: for experiments with and without TopK models respectively.
-
+# Loading Graph Models
+For the Graph Methods, two separate executables exist: *segmentation.py* and *segmentation_TopK.py* for experiments without and with TopK models respectively.
 Within these, the correct model (MoNet, ChebNet or GConvNet) must be loaded manually.
 
-In the experiments without TopK MoNet is a separate model, but ChebNet and GConvNet are combined into one. To switch between them, set the conv_style paramter to ChebConv or GConv. 
-
-So:
-
+In *segmentation.py* load the following:
 ```
 # For Monet:
 model = monet_segmentation(num_features=[32,64,128,256,512,1024])
@@ -101,5 +99,19 @@ model = GraphUNet_modded(conv_style=ChebConv,activation_function=nn.ReLU(), in_c
 model = GraphUNet_modded(conv_style=GCNConv,activation_function=nn.ReLU(), in_channels = 4, device=device)
 ```
 
+In *segmentation_TopK.py* each model can be loaded separately:
 
+```
+# FOR GConvNet With Top K:
 
+model = GraphUNet_TopK_GCN(4,37,4,0.5,False,act=F.relu)
+
+# FOR ChebNet With Top K
+
+# model = GraphUNet_TopK_Cheb(4,37,4,0.5,False,act=F.relu)    
+    
+```
+
+# Saving models and results
+
+To save the coresponding models and results, the save directories must be manually changed.
