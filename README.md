@@ -14,12 +14,25 @@ We thank the authors of the following papers and/or codebases:
 [Spherical CNNs on Unstructured Grids (UG-SCNN)](https://arxiv.org/abs/1901.02039) [https://github.com/maxjiang93/ugscnn](https://github.com/maxjiang93/ugscnn)\
 [Spherical UNet](https://arxiv.org/abs/1904.00906) [https://github.com/zhaofenqiang/Spherical_U-Net](https://github.com/zhaofenqiang/Spherical_U-Net)
 
-# Data 
+# Data & Data Processing
 
 We provide processed and curated dataset from the [Developing Human Connectome Project (dHCP)](https://biomedia.github.io/dHCP-release-notes/index.html) available [here](https://gin.g-node.org/lzjwilliams/geometric-deep-learning-benchmarking), subject to the [dHCP data sharing agreement](http://www.developingconnectome.org/data-release/second-data-release/open-access-dhcp-data-terms-of-use-version-4-0_2019-05-23/).
 
-**alternatively...dataprocess**
+Provided at the above link are the temaplte and native cortical surface features and segmentation labels. 
+The cortical surface features included are those used the benchmarking; myelination, curvature, sulcal depth and corrected cortical thickness.
 
+To generate the warps, the processing shell script is provided at *example_post_processing.sh* and can be run from the terminal.
+First, the human connectome workbench software is required to run the resampling. It can be downloaded from [https://www.humanconnectome.org/software/get-connectome-workbench](https://www.humanconnectome.org/software/get-connectome-workbench)
+
+Then the script must be modified with the correct relevant file paths.
+To do this, one must first download the following and set their precise paths in the script:
+
+1) the symmetric template must be downloaded from [https://brain-development.org/brain-atlases/atlases-from-the-dhcp-project/cortical-surface-template/](https://brain-development.org/brain-atlases/atlases-from-the-dhcp-project/cortical-surface-template/)
+2) the 6th level icosahedron warps downloaded from the onedrive repository [here](https://emckclac-my.sharepoint.com/:f:/g/personal/k1812201_kcl_ac_uk/EluWzKNeKd5CmMqGc1n1cKcBwe2n2yU7CJrzoD_0u8r_7g)
+3) the 6th level icosahedron which is found in the icosahedrons folder of this repository under file *ico-6.surf.gii*
+4) the location of the dHCP Dataset as downloaded from above 
+
+After correctly downloading all the required files and setting their paths in the script, running the shell will produce the complete warped dataset for training.
 
 # Code Usage
 
@@ -31,14 +44,10 @@ Please note that this may cause issues with non-Windows users, or those running 
 
 To run the code, all file locations must be changed as appropriate. 
 
-# Generating Warps
-
-100 ico 2 warps are provided in the ico_2_warps folder. To generate new icosphere 2 warps, run *generating_warps.py* found in the folder ico_2_warps.
-
 
 # Regression Experiments
 
-For all regression experiments excluding UG-SCNN, please utilise the regression experiments folder. For these experiments, experimental parameters must be set in the text files found in the *params* folder; instructions on how to do this are in the README-params file found in the folder. 
+For all regression experiments **excluding UG-SCNN**, please utilise the regression experiments folder. For these experiments, experimental parameters must be set in the text files found in the *params* folder; instructions on how to do this are in the README-params file found in the folder. 
 Some example experiments are provided for simplicity. 
 
 To run a graph model experiment with params in file *experiment_1.txt* from the terminal, input:
@@ -50,4 +59,7 @@ For non graph models use:
  python train.py @params/experiment_1.txt
  ```
  
-Results will be automatically saved in the appropriate results folder
+Results will be automatically saved in the appropriate results folder.
+
+
+
