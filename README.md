@@ -47,7 +47,7 @@ To run the code, all file locations must be changed as appropriate.
 
 # Regression Experiments
 
-For all regression experiments **excluding UG-SCNN**, please utilise the regression experiments folder. For these experiments, experimental parameters must be set in the text files found in the *params* folder; instructions on how to do this are in the README-params file found in the folder. 
+For all regression experiments **excluding UG-SCNN**, please utilise the regression experiments folder. For these experiments, experimental parameters must be set in the text files found in the *params* folder; instructions on how to do this are in the README-params file found in the folder. **This includes both the warped and unwarped data directories**.
 Some example experiments are provided for simplicity. 
 
 To run a graph model experiment with params in file *experiment_1.txt* from the terminal, input:
@@ -60,6 +60,46 @@ For non graph models use:
  ```
  
 Results will be automatically saved in the appropriate results folder.
+
+# UGSCNN / Segemntation Experiments
+
+To run a segmentation or UGSCNN regression experiment, go to the relevant folder within the Segmentation_UGSCNN directory. 
+The appropriate experimental parameters must be changed manually. 
+
+Within the dataloader, the unwarped and warped file directories must be specified manually (specifying either the native or template data paths depending on which experiment is being run).
+
+The dataloaders are found in the following locations:
+- for projected resnet: Projected_ResNet/MyDataLoader.py
+- for Spherical UNet: Spherical_UNet/Spherical_UNet_Dataloader.py 
+- for all Graph Models (MoNet, ChebNet, GConvNet): GraphMethods/graph_dataloader.py 
+
+After setting the correct data locations, each experiment can be run from its corresponding executable python file.
+
+Training Rotations must be manually set to either True or False from the train loader, depending on the choice of experiment:
+
+e.g
+```
+train_loader = My_Projected_dHCP_Data_Segmentation(train_set, number_of_warps = 99, rotations= <#CHANGE HERE#>, smoothing = False, normalisation='std', parity_choice='both', output_as_torch=True)
+```
+
+For the Graph Methods, two separate execitables exist: for experiments with and without TopK models respectively.
+
+Within these, the correct model (MoNet, ChebNet or GConvNet) must be loaded manually.
+
+In the experiments without TopK MoNet is a separate model, but ChebNet and GConvNet are combined into one. To switch between them, set the conv_style paramter to ChebConv or GConv. 
+
+So:
+
+```
+# For Monet:
+model = monet_segmentation(num_features=[32,64,128,256,512,1024])
+
+# For ChebNet:
+model = GraphUNet_modded(conv_style=ChebConv,activation_function=nn.ReLU(), in_channels = 4, device=device)
+    
+# For GConvNet:
+model = GraphUNet_modded(conv_style=GCNConv,activation_function=nn.ReLU(), in_channels = 4, device=device)
+```
 
 
 
