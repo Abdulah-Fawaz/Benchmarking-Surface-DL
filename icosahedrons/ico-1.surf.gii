@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE GIFTI SYSTEM "http://gifti.projects.nitrc.org/gifti.dtd">
+<GIFTI Version="1.0"  NumberOfDataArrays="2">
+   <MetaData>
+      <MD>
+         <Name><![CDATA[gifticlib-version]]></Name>
+         <Value><![CDATA[gifti library version 1.09, 28 June, 2010]]></Value>
+      </MD>
+   </MetaData>
+   <LabelTable/>
+   <DataArray Intent="NIFTI_INTENT_POINTSET"
+              DataType="NIFTI_TYPE_FLOAT32"
+              ArrayIndexingOrder="RowMajorOrder"
+              Dimensionality="2"
+              Dim0="42"
+              Dim1="3"
+              Encoding="GZipBase64Binary"
+              Endian="LittleEndian"
+              ExternalFileName=""
+              ExternalFileOffset="">
+      <MetaData/>
+      <CoordinateSystemTransformMatrix>
+         <DataSpace><![CDATA[NIFTI_XFORM_TALAIRACH]]></DataSpace>
+         <TransformedSpace><![CDATA[NIFTI_XFORM_TALAIRACH]]></TransformedSpace>
+         <MatrixData>
+            1.000000 0.000000 0.000000 0.000000 
+            0.000000 1.000000 0.000000 0.000000 
+            0.000000 0.000000 1.000000 0.000000 
+            0.000000 0.000000 0.000000 1.000000 
+         </MatrixData>
+      </CoordinateSystemTransformMatrix>
+      <Data>eJx1j7ENgDAMBL1KlqCPK0SZDWkjxA64omEF1qAlUWL0WI6bvJz3n51C5ntJTKVSyGK0dM2q4d/OiTc38A4Z+/REopm3a+WiD9X01al96Z6oGjwCs5gp4BfIwawfu/I0FfqW7fLqHjDrsoFn2O3W9n48w263dg8P9hCP/QK0Q70x</Data>
+   </DataArray>
+   <DataArray Intent="NIFTI_INTENT_TRIANGLE"
+              DataType="NIFTI_TYPE_INT32"
+              ArrayIndexingOrder="RowMajorOrder"
+              Dimensionality="2"
+              Dim0="80"
+              Dim1="3"
+              Encoding="GZipBase64Binary"
+              Endian="LittleEndian"
+              ExternalFileName=""
+              ExternalFileOffset="">
+      <MetaData/>
+      <Data>eJxN09lugzAQRmGzJ5CFhCyFtCVJodD3f8HOLx1Lc3Eu5pNFjE0OIYSdtafKOmAbTHOOtcxH2jqrsJb1ss46WWdqnJWY5gJTF+tKpbMaO7Fe9mHdrDtlznJMc8AG5p4KZxk2sF72ZT2sT0qcVZjmFBuZv6l0lmAj62Vv62m9qHEWsDd3IZuYfyhx1mAT62WLNVu/lDmrsYV7nGm1/qh2lmIz61f2tONsb+w5Wo492Y+s450GKpwFrONdZLq/lj0u7D/aFrvzWzJ9E71739pZhl343Z7723NmE+cZbYNprrAzdxjPv3GWYJpLTP+HB2e1sudoKXbk+fH7ubrzT53V2MjzZf/4+hPt</Data>
+   </DataArray>
+</GIFTI>
