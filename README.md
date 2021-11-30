@@ -47,7 +47,7 @@ To run the code, all file locations must be changed as appropriate.
 
 # Regression Experiments
 
-For all regression experiments **excluding UG-SCNN**, please utilise the regression experiments folder. For these experiments, experimental parameters must be set in the text files found in the *params* folder; instructions on how to do this are in the README-params file found in the folder. **This includes both the warped and unwarped data directories**.
+For all regression experiments **excluding UG-SCNN**, experimental parameters must be set in the text files found in the *params* folder; instructions on how to do this are in the README-params file found in the folder. **This includes both the warped and unwarped data directories**.
 Some example experiments are provided for simplicity. 
 
 To run a graph model experiment with params in file *experiment_1.txt* from the terminal, input:
@@ -58,7 +58,9 @@ For non graph models use:
  ```
  python train.py @params/experiment_1.txt
  ```
- 
+
+Graph Models are: Monet, ChebNet, GConvNet (with and without TopK Pooling) and all use *train_graph.py*. 
+All other models are non-graph models are executed with *train.py*.
 Results will be automatically saved in the appropriate results folder.
 
 # UGSCNN / Segemntation Experiments - Setting Experiment Parameters
