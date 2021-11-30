@@ -14,14 +14,27 @@ import numpy as np
 
 
 import nibabel as nb
+#location of icosphere 2 surface file
 
-ico_3 = nb.load('/home/fa19/Downloads/icosahedrons/ico-2.surf.gii')
+ico_2_file_location = '/home/fa19/Downloads/icosahedrons/ico-2.surf.gii'
 
-coords = ico_3.darrays[0].data / 100
+save_directory ='/home/fa19/Documents/Benchmarking/ico_2_warps/'
+#directory to save generated ico2 warps
+
+ico_2 = nb.load(ico_2_file_location)
+
+coords = ico_2.darrays[0].data / 100
 
 
 def find_distance(arr1, arr2):
     return np.arccos(np.dot(arr1, arr2))
+
+"""
+
+First calculates minimum distance between icosphere points
+
+"""
+
 
 minimum = 1000
 for row in coords:
@@ -36,8 +49,8 @@ for row in coords:
                 
                 
 smallest_distance = minimum
+#sets minimum distance
 
-#l = smallest_distance/3
 
 def gen_new_coord(l):
     sol = np.zeros(3)
@@ -105,12 +118,20 @@ def z_to_point(arr):
 
 #sol = np.zeros_like(coords)
     
-l = minimum / 8
+"""
+
+Distance in which ico2 points are warped is by up to l where l is some fraction of the smallest distance
+
+"""
+
+l = minimum / 8 
 
 for k in range(100):
-    ico_3 = nb.load('/home/fa19/Downloads/icosahedrons/ico-2.surf.gii')
+    # generates 100 warps
+    
+    ico_2 = nb.load(ico_2_file_location)
 
-    coords = ico_3.darrays[0].data / 100
+    coords = ico_2.darrays[0].data / 100
     counter = 0
     for row in coords:
         failed = True
@@ -129,6 +150,6 @@ for k in range(100):
     
     
     
-    ico_3.darrays[0].data = coords * 100
-    nb.save(ico_3, '/home/fa19/Documents/Benchmarking/ico_2_warps/ico_2_'+str(k)+'.surf.gii')
+    ico_2.darrays[0].data = coords * 100
+    nb.save(ico_2, save_directory +'ico_2_'+str(k)+'.surf.gii')
 

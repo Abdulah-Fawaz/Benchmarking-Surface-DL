@@ -1,0 +1,11 @@
+--model=presnet
+--project=True
+--task=regression_confounded
+--in_channels=4
+--dataset_arr=birth_age_confounded
+--patience=100
+--train_rotations=False
+--train_warps=100
+--learning_rate=0.001
+--unwarp_dir=/data/warped_native
+--warp_dir=/data/warped_native

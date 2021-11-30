@@ -1,0 +1,11 @@
+--model=sphericalunet
+--project=False
+--task=regression
+--in_channels=4
+--dataset_arr=scan_age
+--patience=100
+--train_rotations=True
+--train_warps=100
+--learning_rate=0.001
+--unwarped_dir
+--warpd_dir=
