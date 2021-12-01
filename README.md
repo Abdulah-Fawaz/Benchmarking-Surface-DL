@@ -50,13 +50,13 @@ To run the code, all file locations must be changed as appropriate.
 For all regression experiments **excluding UG-SCNN**, experimental parameters must be set in the text files found in the *params* folder; instructions on how to do this are in the README-params file found in the folder. **This includes both the warped and unwarped data directories**.
 Some example experiments are provided for simplicity. 
 
-To run a graph model experiment with params in file *experiment_1.txt* from the terminal, input:
+To run a graph model experiment with params in file *ChebNet_NoPool_BirthAgeConfounded_Rotated_Native* from the terminal, input:
 ```
-python train_graph.py @params/experiment_1.txt
+python train_graph.py @params/ChebNet_NoPool_BirthAgeConfounded_Rotated_Native
 ```
-For non graph models use:
+For non graph models e.g. Spherical UNet use:
  ```
- python train.py @params/experiment_1.txt
+ python train.py @params/SphericalUNet_ScanAge_Rotated_Native
  ```
 
 Graph Models are: Monet, ChebNet, GConvNet (with and without TopK Pooling) and all use *train_graph.py*. 
