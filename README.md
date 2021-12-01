@@ -16,7 +16,7 @@ We thank the authors of the following papers and/or codebases:
 
 # Data & Data Processing
 
-We provide processed and curated dataset from the [Developing Human Connectome Project (dHCP)](https://biomedia.github.io/dHCP-release-notes/index.html) available [here](https://gin.g-node.org/lzjwilliams/geometric-deep-learning-benchmarking), subject to the [dHCP data sharing agreement](http://www.developingconnectome.org/data-release/second-data-release/open-access-dhcp-data-terms-of-use-version-4-0_2019-05-23/).
+We provide processed and curated dataset from the [Developing Human Connectome Project (dHCP)](https://biomedia.github.io/dHCP-release-notes/index.html) available [here](https://gin.g-node.org/lzjwilliams/geometric-deep-learning-benchmarking), subject to the [dHCP data sharing agreement](http://www.developingconnectome.org/data-release/second-data-release/open-access-dhcp-data-terms-of-use-version-4-0_2019-05-23/). Note that the data repository is private and only visible to those who have access. To gain access please email emma.robinson(at)kcl.ac.uk forwarding confirmation that the data sharing agreement has been signed.
 
 Provided at the above link are the temaplte and native cortical surface features and segmentation labels. 
 The cortical surface features included are those used the benchmarking; myelination, curvature, sulcal depth and corrected cortical thickness.
